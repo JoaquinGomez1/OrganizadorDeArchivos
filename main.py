@@ -10,6 +10,20 @@ def RemoveDuplicates(listaDup):
 	listaSinDup = list(dict.fromkeys(listaDup))
 	return listaSinDup
 
+
+def Crear_Ordenar(): # No paso parametros porque saco las variables desde principal.
+	for tipo in range(len(listOfTypes)):	
+		NewDir = (MainDir + f'/{listOfTypes[tipo]}')
+
+		if os.path.exists(NewDir) == False: # Controlo que la carpeta no exista previamente
+			os.mkdir(NewDir) # para que pueda ser creada sin errores
+
+	for i in range(len(listOfFiles)):  # Muevo a cada carpeta el archivo que corresponda
+		for z in range(len(listOfTypes)):
+			if listOfFiles[i].endswith(listOfTypes[z]):
+				shutil.move(MainDir + f'/{listOfFiles[i]}', MainDir + f'/{listOfTypes[z]}')
+
+#---------------------------------------------PRINCIPAL----------------------------------------
 try:
 	MainDir = sys.argv[1]	# El formato en cmd es: 'python <nombrescript> <direccion> <parametro>'
 
@@ -38,17 +52,7 @@ try:
 				listOfTypes.append(auxVar[1])
 
 		listOfTypes = RemoveDuplicates(listOfTypes)
-
-		for tipo in range(len(listOfTypes)):	
-			NewDir = (MainDir + f'/{listOfTypes[tipo]}')
-
-			if os.path.exists(NewDir) == False: # Controlo que la carpeta no exista previamente
-				os.mkdir(NewDir) # para que pueda ser creada sin errores
-
-		for i in range(len(listOfFiles)):  # Muevo a cada carpeta el archivo que corresponda
-			for z in range(len(listOfTypes)):
-				if listOfFiles[i].endswith(listOfTypes[z]):
-					shutil.move(MainDir + f'/{listOfFiles[i]}', MainDir + f'/{listOfTypes[z]}')
+		Crear_Ordenar()
 
 		time.sleep(0.5)
 		print('...')	# Si ya llego a este punto sin errores, los archivos se organizaron
